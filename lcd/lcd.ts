@@ -1,17 +1,16 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const johnny_five_1 = __importDefault(require("johnny-five"));
+import five from "johnny-five";
 const raspi = require('raspi-io');
+
 console.log('Starting j5...');
-class LCD {
+
+export class LCD {
+    board: any;
+    lcd: any;
     constructor() {
-        this.board = new johnny_five_1.default.Board({ repl: false, io: new raspi() });
+        this.board = new five.Board({repl: false, io: new raspi()})
         this.board.on("ready", () => {
-            console.log('Board ready...');
-            this.lcd = new johnny_five_1.default.LCD({
+            console.log('Board ready...')
+            this.lcd = new five.LCD({
                 // LCD pin name  RS  EN  DB4 DB5 DB6 DB7
                 // Arduino pin # 7    8   9   10  11  12
                 // pins: [12, 11, 5, 4, 3, 2],
@@ -23,15 +22,16 @@ class LCD {
             });
         });
     }
+
     print(message = "", lineNum = 0) {
         if (this.lcd) {
             this.lcd.cursor(lineNum, 0).print(message);
         }
     }
+
     printAt(message = "", lineNum = 0, colNum = 0) {
         if (this.lcd) {
             this.lcd.cursor(lineNum, colNum).print(message);
         }
     }
 }
-exports.LCD = LCD;
