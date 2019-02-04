@@ -10,6 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "dayjs": "^1.7.5",
-    "johnny-five": "^0.15.0"
+    "johnny-five": "^0.15.0",
+    "localtunnel": "^1.9.1",
+    "raspi-io": "^9.0.1"
   }
 }

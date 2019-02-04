@@ -1,42 +1,47 @@
 const dayjs = require('dayjs')
-const five = require("johnny-five")
+const os = require('os');
+const localtunnel = require('localtunnel');
+const LCD = require('./lcd');
 
-const board = new five.Board({repl: false})
+const port = 3000;
 
-console.log('Starting j5...')
+console.log('Starting j5...');
 
-board.on("ready", function() {
-  console.log('Board ready...')
-  const lcd = new five.LCD({
-    // LCD pin name  RS  EN  DB4 DB5 DB6 DB7
-    // Arduino pin # 7    8   9   10  11  12
-    pins: [12, 11, 5, 4, 3, 2],
-    backlight: 6,
-    rows: 2,
-    cols: 20
-  });
-
-
-  function printTime(h, m, s) {
-    const pad = n => n.toString().padStart(2, '0')
-    const fill = s => s.padStart(15, ' ')
-    lcd.cursor(0,0).print(`  ${h}:${pad(m)}:${pad(s)} `)
+function printTime(h, m, s) {
+    const pad = n => n.toString().padStart(2, '0');
+    // const fill = s => s.padStart(15, ' ')
+    LCD.print(`  ${h}:${pad(m)}:${pad(s)} `, 0);
     if (h === 8 && m === 59) {
-        lcd.cursor(1,0).print(`T minus ${ 60 - s} `)
+        LCD.print(`T minus ${ 60 - s} `, 1);
     } else {
-      const today = dayjs().format('ddd D MMM')
-      lcd.cursor(1,0).print(fill(today))
+        const today = dayjs().format('ddd D MMM');
+        LCD.print(today, 1);
     }
-  }
+}
 
-  setInterval(() => {
-    const date = new Date()
-    const h = date.getHours()
-    const m = date.getMinutes()
-    const s = date.getSeconds()
-    printTime(h, m, s)
-  }, 1000)
+setInterval(() => {
+    const date = new Date();
+    const h = date.getHours();
+    const m = date.getMinutes();
+    const s = date.getSeconds();
+    printTime(h, m, s);
+}, 1000);
+
+
+
+
+var tunnel = localtunnel(port, function(err, tunnel) {
+    if (err) {
+        console.log(err);
+    }
+
+    // the assigned public url for your tunnel
+    // i.e. https://abcdefgjhij.localtunnel.me
+    console.log(tunnel.url);
 });
 
+tunnel.on("error", (err) => console.log(err));
 
-
+tunnel.on('close', function() {
+    // tunnels are closed
+});
