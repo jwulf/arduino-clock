@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.18.0",
     "dayjs": "^1.7.5",
     "johnny-five": "^0.15.0",
     "localtunnel": "^1.9.1",
