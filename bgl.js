@@ -1,3 +1,5 @@
+const axios = require("axios");
+
 var arrows = {
     SingleDown: '↓︎',
     DoubleDown: '↓︎↓︎',
