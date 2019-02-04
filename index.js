@@ -36,7 +36,7 @@ setInterval(async () => {
     const bgl = await updateBglFromNightscout();
     const today = dayjs().format('ddd D MMM');
     LCD.print(`${today} ${bgl}`, 1);
-}, nightscoutPollInterval);
+}, nightscoutPollInterval * 1000);
 
 function getTime() {
     const date = new Date();
