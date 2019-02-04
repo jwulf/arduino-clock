@@ -10,6 +10,9 @@ var arrows = {
     Flat: '→'
 };
 
+// Set to the URL for your Nightscout instance
+var nightscoutUrl = 'https://cgm.prahlads.space/api/v1/entries/current.json'
+
 // Set to false to use the US units dg/L. Set to true to use EU/AU/NZ units mmol/L
 var mmol = true
 
