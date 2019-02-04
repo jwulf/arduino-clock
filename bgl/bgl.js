@@ -24,22 +24,22 @@ function updateBglFromNightscout() {
         axios.get(nightscoutUrl, { crossdomain: true }).then(res => {
             try {
                 console.log('Got CGM update');
-                var data = res.data[0];
-                var bgl = data.sgv;
+                const data = res.data[0];
+                let bgl = data.sgv;
 
                 // Check if Nightscout data is more than 5 mins old
-                var dateString = data.dateString;
-                var timestamp = new Date(dateString);
-                var now = new Date();
-                dataAgeMinutes = (now - timestamp) / 60 / 1000;
+                const dateString = data.dateString;
+                const timestamp = new Date(dateString);
+                const now = new Date();
+                const dataAgeMinutes = (now - timestamp) / 60 / 1000;
                 console.log({dataAgeMinutes})
-                var dataIsOld = dataAgeMinutes > nightscoutDataWindowTolerance
+                const dataIsOld = dataAgeMinutes > nightscoutDataWindowTolerance
                 // bglOutOfDate = dataIsOld;
 
                 if (mmol) {
                     bgl = bgl / 18;
                 }
-                var arrow = arrows[data.direction] || '';
+                const arrow = arrows[data.direction] || '';
                 resolve(round(bgl, 1) + ' ' + arrow);
             } catch (e) {
                 // This will happen if Nightscout returns no BGL data
@@ -61,8 +61,8 @@ function round(value, precision) {
 }
 
 function zeroPadding(num, digit) {
-    var zero = '';
-    for (var i = 0; i < digit; i++) {
+    let zero = '';
+    for (let i = 0; i < digit; i++) {
         zero += '0';
     }
     return (zero + num).slice(-digit);

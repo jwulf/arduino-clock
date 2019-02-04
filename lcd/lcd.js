@@ -1,6 +1,7 @@
 const five = require("johnny-five")
 const raspi = require('raspi-io');
-let lcd;
+
+console.log('Starting j5...');
 
 class LCD {
     constructor() {
@@ -33,6 +34,5 @@ class LCD {
     }
 
 }
-
 
 module.exports = new LCD();
