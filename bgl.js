@@ -20,32 +20,37 @@ var mmol = true
 var nightscoutDataWindowTolerance = 7 //mins
 
 function updateBglFromNightscout() {
-    axios.get(nightscoutUrl, { crossdomain: true }).then(res => {
-        try {
-            console.log('Got CGM update');
-            var data = res.data[0];
-            var bgl = data.sgv;
+    return new Promise((resolve, reject) => {
+        axios.get(nightscoutUrl, { crossdomain: true }).then(res => {
+            try {
+                console.log('Got CGM update');
+                var data = res.data[0];
+                var bgl = data.sgv;
 
-            // Check if Nightscout data is more than 5 mins old
-            var dateString = data.dateString;
-            var timestamp = new Date(dateString);
-            var now = new Date();
-            dataAgeMinutes = (now - timestamp) / 60 / 1000;
-            console.log({dataAgeMinutes})
-            var dataIsOld = dataAgeMinutes > nightscoutDataWindowTolerance
-            // bglOutOfDate = dataIsOld;
+                // Check if Nightscout data is more than 5 mins old
+                var dateString = data.dateString;
+                var timestamp = new Date(dateString);
+                var now = new Date();
+                dataAgeMinutes = (now - timestamp) / 60 / 1000;
+                console.log({dataAgeMinutes})
+                var dataIsOld = dataAgeMinutes > nightscoutDataWindowTolerance
+                // bglOutOfDate = dataIsOld;
 
-            if (mmol) {
-                bgl = bgl / 18;
+                if (mmol) {
+                    bgl = bgl / 18;
+                }
+                var arrow = arrows[data.direction] || '';
+                resolve(round(bgl, 1) + ' ' + arrow);
+            } catch (e) {
+                // This will happen if Nightscout returns no BGL data
+                console.log(e);
+                resolve('--');
             }
-            var arrow = arrows[data.direction] || '';
-            resolve(round(bgl, 1) + ' ' + arrow);
-        } catch (e) {
-            // This will happen if Nightscout returns no BGL data
-            console.log(e);
-            resolve('BGL n/a');
-        }
-    }).catch(console.log);
+        }).catch(err => {
+            console.log(err);
+            resolve("--");
+        });
+    });
 }
 
 /* Utility functions */
