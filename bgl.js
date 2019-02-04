@@ -33,7 +33,7 @@ function updateBglFromNightscout() {
             dataAgeMinutes = (now - timestamp) / 60 / 1000;
             console.log({dataAgeMinutes})
             var dataIsOld = dataAgeMinutes > nightscoutDataWindowTolerance
-            clock.bglOutOfDate = dataIsOld;
+            // bglOutOfDate = dataIsOld;
 
             if (mmol) {
                 bgl = bgl / 18;
